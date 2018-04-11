@@ -352,6 +352,7 @@ public class Sync extends CordovaPlugin {
                 sendErrorMessage(e.getLocalizedMessage(), CONNECTION_ERROR, callbackContext, connection.getResponseCode());
             } catch (IOException ioe) {
                 Log.d(LOG_TAG, "IO EXCEPTION");
+                Log.d(LOG_TAG,  ioe.toString());
             }
         }
 
