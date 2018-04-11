@@ -206,6 +206,7 @@ public class Sync extends CordovaPlugin {
     }
 
     private boolean download(final String source, final File file, final JSONObject headers, final ProgressEvent progress, final CallbackContext callbackContext) {
+        Log.d(LOG_TAG, "I JUST WANT TO MAKE SURE THIS IS WORKING BEFORE I DO TOO MUCH" );
         Log.d(LOG_TAG, "download " + source);
 
         if (!Patterns.WEB_URL.matcher(source).matches()) {
@@ -250,6 +251,7 @@ public class Sync extends CordovaPlugin {
                 }
                 inputStream = new SimpleTrackingInputStream(readResult.inputStream);
             } else {
+                Log.d(LOG_TAG, "IN THE ELSE");
                 // connect to server
                 // Open a HTTP connection to the URL based on protocol
                 connection = resourceApi.createHttpConnection(sourceUri);
@@ -279,7 +281,9 @@ public class Sync extends CordovaPlugin {
                     retval = false;
                     return retval;
                 } else {
+                    Log.d(LOG_TAG, "IN THE OTHER ELSE");
                     if (connection.getContentEncoding() == null || connection.getContentEncoding().equalsIgnoreCase("gzip")) {
+                        Log.d(LOG_TAG, "IN THE IF ELSE");
                         // Only trust content-length header if we understand
                         // the encoding -- identity or gzip
                         int connectionLength = connection.getContentLength();
@@ -301,6 +305,7 @@ public class Sync extends CordovaPlugin {
 
             if (!cached) {
                 try {
+                    Log.d(LOG_TAG, "NOT CACHED BEGINNING READ");
                     synchronized (progress) {
                         if (progress.isAborted()) {
                             retval = false;
@@ -327,7 +332,12 @@ public class Sync extends CordovaPlugin {
 
                         updateProgress(callbackContext, progress);
                     }
-                } finally {
+                }
+                catch( Throwable e ){
+                    Log.d(LOG_TAG, "NEW EXCEPTION");
+                    Log.d(LOG_TAG, e.toString());
+                }
+                finally {
                     synchronized (progress) {
                         //progress.connection = null;
                     }
@@ -341,6 +351,7 @@ public class Sync extends CordovaPlugin {
                 retval = false;
                 sendErrorMessage(e.getLocalizedMessage(), CONNECTION_ERROR, callbackContext, connection.getResponseCode());
             } catch (IOException ioe) {
+                Log.d(LOG_TAG, "IO EXCEPTION");
             }
         }
 
