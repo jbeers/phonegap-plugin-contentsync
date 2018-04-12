@@ -339,7 +339,12 @@ public class Sync extends CordovaPlugin {
         } catch (Throwable e) {
             try {
                 retval = false;
-                sendErrorMessage(e.getLocalizedMessage(), CONNECTION_ERROR, callbackContext, connection.getResponseCode());
+                try {
+                    sendErrorMessage(e.getLocalizedMessage(), CONNECTION_ERROR, callbackContext, connection.getResponseCode());
+                }
+                catch( Throwable e ){
+                    sendErrorMessage(e.getLocalizedMessage(), CONNECTION_ERROR, callbackContext, -1);
+                }
             } catch (IOException ioe) {
             }
         }
